@@ -1,11 +1,16 @@
 #Target name
 target = GMT
 
+.DEFAULT_GOAL:=default
+default: 
+	make -j8 $(target).elf
+
+
 #CubeMx-generated firmware directory
 FDIR = Firmware
 
 #build directory to store all intermediate object files for faster rebuilding 
-BUILD = build
+BUILD = Build
 
 
 #Extract variables from the CubeMX-generated Makefile
@@ -20,13 +25,13 @@ DEFAULT_DEFINES = $(C_DEFS)
 #User-defined sources & headers (for c or asm sources, use c_src+=<loc>/*.c)
 SCRDIR = STM32CubeRobotics-Framework
 cpp_inc = $(c_inc) \
--I$(SCRDIR)/Applications/inc \
 -I$(SCRDIR)/Drivers/inc \
 -I$(SCRDIR)/Modules/inc
 
 cpp_src = \
-$(wildcard $(SCRDIR)/Applications/src/*.cpp) \
-$(wildcard $(SCRDIR)/Drivers/src/*.cpp) 
+$(wildcard *.cpp) \
+$(wildcard $(SCRDIR)/Drivers/src/*.cpp) \
+$(wildcard $(SCRDIR)/Modules/src/*.cpp)
 
 
 #Compliers
@@ -38,7 +43,6 @@ as = $(compiler_path)$(compiler_prefix)gcc -x assembler-with-cpp
 cp = $(compiler_path)$(compiler_prefix)objcopy
 sz = $(compiler_path)$(compiler_prefix)size
 
-.DEFAULT_GOAL:=$(target).elf
 
 #########===================== Frequently modified flags ======================#########
 ###macros (#define) (append user defines here)
@@ -98,27 +102,41 @@ vpath %.c $(sort $(dir $(c_src)))
 objs += $(addprefix $(BUILD)/,$(notdir $(cpp_src:.cpp=.o)))
 vpath %.cpp $(sort $(dir $(cpp_src)))
 
+$(BUILD):
+	mkdir $@
+
 $(BUILD)/%.o: %.c Makefile | $(BUILD) 
-	$(cc) -c $(cflags) -Wa,-a,-ad,-alms=$(BUILD)/$(notdir $(<:.c=.lst)) $< -o $@
+	@$(cc) -c $(cflags) -Wa,-a,-ad,-alms=$(BUILD)/$(notdir $(<:.c=.lst)) $< -o $@
+	@echo '$(cc) -c [.....] $(notdir $<) -o $(notdir $@)'
 
 $(BUILD)/%.o: %.cpp Makefile | $(BUILD) 
-	$(cxx) -c $(cppflags) -Wa,-a,-ad,-alms=$(BUILD)/$(notdir $(<:.cpp=.lst)) $< -o $@
+	@$(cxx) -c $(cppflags) -Wa,-a,-ad,-alms=$(BUILD)/$(notdir $(<:.cpp=.lst)) $< -o $@
+	@echo '$(cxx) -c [.....] $(notdir $<) -o $(notdir $@)'
 
 $(BUILD)/%.o: %.s Makefile | $(BUILD)
-	$(as) -c $(asflags) $< -o $@
+	@$(as) -c $(asflags) $< -o $@
+	@echo '$(as) -c [.....] $(notdir $<) -o $(notdir $@)'
 
 $(target).elf: $(objs) Makefile
-	$(cxx) $(objs) $(ldflags) -o $@
+	@$(cxx) $(objs) $(ldflags) -o $@
+	@echo '$(cxx) [...all objs...] [...ldflags...] -o $@'
 	$(sz) $@
 
 -include $(wildcard $(BUILD)/*.d)
 
 #PHONY Targets
-.PHONY: clean echo-objs echo-sources echo-target
+.PHONY: 
+	default 
+	Clean 
+	echo-objs 
+	echo-sources 
+	echo-target
+	echo-flags
 
-#clean
-clean:
+#Clean
+Clean:
 	-rm -fR $(BUILD)
+	-rm $(target).elf
 
 #Print Info
 echo-objs:
@@ -126,6 +144,21 @@ echo-objs:
 
 echo-target:
 	@echo "$(target)"
+
+echo-flags:
+	@echo "==================================================================="
+	@echo "Assembly Flags:"
+	@echo "$(asflags)" | fold -w 80
+	@echo "==================================================================="	
+	@echo "C Flags:"
+	@echo "$(cflags)" | fold -w 80
+	@echo "==================================================================="
+	@echo "C++ Flags:"
+	@echo "$(cppflags)" | fold -w 80
+	@echo "==================================================================="	
+	@echo "Linker Flags:"
+	@echo "$(ldflags)" | fold -w 80
+	@echo "==================================================================="	
 
 echo-sources: 
 	@echo "==================================================================="
@@ -151,9 +184,3 @@ echo-sources:
 	@echo "$(cpp_inc)" | tr " " "\n"
 	@echo "==================================================================="
 
-
-
-inc = $(sort $(C_INCLUDES:-I%=%))
-
-test:
-	@echo "$(inc)"
