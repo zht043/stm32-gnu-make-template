@@ -1,0 +1,10 @@
+gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
+scr_dependancy.h:70:13:void throwException(std::__cxx11::string)	16	static
+scr_gpio.h:17:9:scr::GPIO::GPIO(GPIO_TypeDef*, uint16_t)	24	static
+scr_gpio.h:21:9:scr::GPIO::~GPIO()	16	static
+app_main.cpp:17:6:void setup()	4	static
+app_main.cpp:21:6:void loop0()	8	static
+app_main.cpp:35:6:void loop1()	4	static
+app_main.cpp:37:1:void __static_initialization_and_destruction_0(int, int)	16	static
+app_main.cpp:37:1:cpp)	8	static
+app_main.cpp:37:1:cpp)	8	static
