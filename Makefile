@@ -105,12 +105,14 @@ vpath %.cpp $(sort $(dir $(cpp_src)))
 $(BUILD):
 	mkdir $@
 
+#####Edit: deleted "-Wa,-a,-ad,-alms=$(BUILD)/$(notdir $(<:.c=.lst))" option
+#####Optional: Add -fdump-rtl-expand and run "egypt *.expand > graph.dot" to generate function-call graph (Graphviz)
 $(BUILD)/%.o: %.c Makefile | $(BUILD) 
-	@$(cc) -c $(cflags) -Wa,-a,-ad,-alms=$(BUILD)/$(notdir $(<:.c=.lst)) $< -o $@
+	@$(cc) -c $(cflags) $< -o $@
 	@echo '$(cc) -c [.....] $(notdir $<) -o $(notdir $@)'
 
 $(BUILD)/%.o: %.cpp Makefile | $(BUILD) 
-	@$(cxx) -c $(cppflags) -Wa,-a,-ad,-alms=$(BUILD)/$(notdir $(<:.cpp=.lst)) $< -o $@
+	@$(cxx) -c $(cppflags) $< -o $@
 	@echo '$(cxx) -c [.....] $(notdir $<) -o $(notdir $@)'
 
 $(BUILD)/%.o: %.s Makefile | $(BUILD)
@@ -122,16 +124,21 @@ $(target).elf: $(objs) Makefile
 	@echo '$(cxx) [...all objs...] [...ldflags...] -o $@'
 	$(sz) $@
 
+###special treatment for main.c (shut the implicit function declaration warning)
+$(BUILD)/main.o: main.c Makefile | $(BUILD)
+	@$(cc) -c $(cflags) -Wno-implicit-function-declaration -Wa,-a,-ad,-alms=$(BUILD)/$(notdir $(<:.c=.lst)) $< -o $@
+	@echo '$(cc) -c [.....] $(notdir $<) -o $(notdir $@)'
+
 -include $(wildcard $(BUILD)/*.d)
 
 #PHONY Targets
 .PHONY: 
 	default 
 	Clean 
-	echo-objs 
-	echo-sources 
-	echo-target
-	echo-flags
+	print-objs 
+	print-sources 
+	print-target
+	print-flags
 
 #Clean
 Clean:
@@ -139,13 +146,13 @@ Clean:
 	-rm $(target).elf
 
 #Print Info
-echo-objs:
+print-objs:
 	@echo "$(objs)" | tr " " "\n"
 
-echo-target:
+print-target:
 	@echo "$(target)"
 
-echo-flags:
+print-flags:
 	@echo "==================================================================="
 	@echo "Assembly Flags:"
 	@echo "$(asflags)" | fold -w 80
@@ -160,7 +167,7 @@ echo-flags:
 	@echo "$(ldflags)" | fold -w 80
 	@echo "==================================================================="	
 
-echo-sources: 
+print-sources: 
 	@echo "==================================================================="
 	@echo "Link Scripts:"
 	@echo "$(linkscript)" | tr " " "\n"
@@ -184,3 +191,5 @@ echo-sources:
 	@echo "$(cpp_inc)" | tr " " "\n"
 	@echo "==================================================================="
 
+print-size: $(target).elf
+	@$(sz) $<
