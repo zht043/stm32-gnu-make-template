@@ -1,0 +1,509 @@
+ARM GAS  /tmp/ccIZVMoC.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"stm32f4xx_it.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.NMI_Handler,"ax",%progbits
+  18              		.align	1
+  19              		.global	NMI_Handler
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	NMI_Handler:
+  26              	.LFB134:
+  27              		.file 1 "Firmware/Core/Src/stm32f4xx_it.c"
+   1:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE BEGIN Header */
+   2:Firmware/Core/Src/stm32f4xx_it.c **** /**
+   3:Firmware/Core/Src/stm32f4xx_it.c ****   ******************************************************************************
+   4:Firmware/Core/Src/stm32f4xx_it.c ****   * @file    stm32f4xx_it.c
+   5:Firmware/Core/Src/stm32f4xx_it.c ****   * @brief   Interrupt Service Routines.
+   6:Firmware/Core/Src/stm32f4xx_it.c ****   ******************************************************************************
+   7:Firmware/Core/Src/stm32f4xx_it.c ****   * @attention
+   8:Firmware/Core/Src/stm32f4xx_it.c ****   *
+   9:Firmware/Core/Src/stm32f4xx_it.c ****   * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
+  10:Firmware/Core/Src/stm32f4xx_it.c ****   * All rights reserved.</center></h2>
+  11:Firmware/Core/Src/stm32f4xx_it.c ****   *
+  12:Firmware/Core/Src/stm32f4xx_it.c ****   * This software component is licensed by ST under BSD 3-Clause license,
+  13:Firmware/Core/Src/stm32f4xx_it.c ****   * the "License"; You may not use this file except in compliance with the
+  14:Firmware/Core/Src/stm32f4xx_it.c ****   * License. You may obtain a copy of the License at:
+  15:Firmware/Core/Src/stm32f4xx_it.c ****   *                        opensource.org/licenses/BSD-3-Clause
+  16:Firmware/Core/Src/stm32f4xx_it.c ****   *
+  17:Firmware/Core/Src/stm32f4xx_it.c ****   ******************************************************************************
+  18:Firmware/Core/Src/stm32f4xx_it.c ****   */
+  19:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE END Header */
+  20:Firmware/Core/Src/stm32f4xx_it.c **** 
+  21:Firmware/Core/Src/stm32f4xx_it.c **** /* Includes ------------------------------------------------------------------*/
+  22:Firmware/Core/Src/stm32f4xx_it.c **** #include "main.h"
+  23:Firmware/Core/Src/stm32f4xx_it.c **** #include "stm32f4xx_it.h"
+  24:Firmware/Core/Src/stm32f4xx_it.c **** #include "FreeRTOS.h"
+  25:Firmware/Core/Src/stm32f4xx_it.c **** #include "task.h"
+  26:Firmware/Core/Src/stm32f4xx_it.c **** /* Private includes ----------------------------------------------------------*/
+  27:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE BEGIN Includes */
+  28:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE END Includes */
+  29:Firmware/Core/Src/stm32f4xx_it.c **** 
+  30:Firmware/Core/Src/stm32f4xx_it.c **** /* Private typedef -----------------------------------------------------------*/
+  31:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE BEGIN TD */
+ARM GAS  /tmp/ccIZVMoC.s 			page 2
+
+
+  32:Firmware/Core/Src/stm32f4xx_it.c **** 
+  33:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE END TD */
+  34:Firmware/Core/Src/stm32f4xx_it.c **** 
+  35:Firmware/Core/Src/stm32f4xx_it.c **** /* Private define ------------------------------------------------------------*/
+  36:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE BEGIN PD */
+  37:Firmware/Core/Src/stm32f4xx_it.c ****  
+  38:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE END PD */
+  39:Firmware/Core/Src/stm32f4xx_it.c **** 
+  40:Firmware/Core/Src/stm32f4xx_it.c **** /* Private macro -------------------------------------------------------------*/
+  41:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE BEGIN PM */
+  42:Firmware/Core/Src/stm32f4xx_it.c **** 
+  43:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE END PM */
+  44:Firmware/Core/Src/stm32f4xx_it.c **** 
+  45:Firmware/Core/Src/stm32f4xx_it.c **** /* Private variables ---------------------------------------------------------*/
+  46:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE BEGIN PV */
+  47:Firmware/Core/Src/stm32f4xx_it.c **** 
+  48:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE END PV */
+  49:Firmware/Core/Src/stm32f4xx_it.c **** 
+  50:Firmware/Core/Src/stm32f4xx_it.c **** /* Private function prototypes -----------------------------------------------*/
+  51:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE BEGIN PFP */
+  52:Firmware/Core/Src/stm32f4xx_it.c **** 
+  53:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE END PFP */
+  54:Firmware/Core/Src/stm32f4xx_it.c **** 
+  55:Firmware/Core/Src/stm32f4xx_it.c **** /* Private user code ---------------------------------------------------------*/
+  56:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE BEGIN 0 */
+  57:Firmware/Core/Src/stm32f4xx_it.c **** 
+  58:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE END 0 */
+  59:Firmware/Core/Src/stm32f4xx_it.c **** 
+  60:Firmware/Core/Src/stm32f4xx_it.c **** /* External variables --------------------------------------------------------*/
+  61:Firmware/Core/Src/stm32f4xx_it.c **** extern TIM_HandleTypeDef htim12;
+  62:Firmware/Core/Src/stm32f4xx_it.c **** 
+  63:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE BEGIN EV */
+  64:Firmware/Core/Src/stm32f4xx_it.c **** 
+  65:Firmware/Core/Src/stm32f4xx_it.c **** /* USER CODE END EV */
+  66:Firmware/Core/Src/stm32f4xx_it.c **** 
+  67:Firmware/Core/Src/stm32f4xx_it.c **** /******************************************************************************/
+  68:Firmware/Core/Src/stm32f4xx_it.c **** /*           Cortex-M4 Processor Interruption and Exception Handlers          */ 
+  69:Firmware/Core/Src/stm32f4xx_it.c **** /******************************************************************************/
+  70:Firmware/Core/Src/stm32f4xx_it.c **** /**
+  71:Firmware/Core/Src/stm32f4xx_it.c ****   * @brief This function handles Non maskable interrupt.
+  72:Firmware/Core/Src/stm32f4xx_it.c ****   */
+  73:Firmware/Core/Src/stm32f4xx_it.c **** void NMI_Handler(void)
+  74:Firmware/Core/Src/stm32f4xx_it.c **** {
+  28              		.loc 1 74 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 80B4     		push	{r7}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 7, -4
+  37 0002 00AF     		add	r7, sp, #0
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_register 7
+  75:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+  76:Firmware/Core/Src/stm32f4xx_it.c **** 
+ARM GAS  /tmp/ccIZVMoC.s 			page 3
+
+
+  77:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE END NonMaskableInt_IRQn 0 */
+  78:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+  79:Firmware/Core/Src/stm32f4xx_it.c **** 
+  80:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE END NonMaskableInt_IRQn 1 */
+  81:Firmware/Core/Src/stm32f4xx_it.c **** }
+  40              		.loc 1 81 0
+  41 0004 00BF     		nop
+  42 0006 BD46     		mov	sp, r7
+  43              	.LCFI2:
+  44              		.cfi_def_cfa_register 13
+  45              		@ sp needed
+  46 0008 5DF8047B 		ldr	r7, [sp], #4
+  47              	.LCFI3:
+  48              		.cfi_restore 7
+  49              		.cfi_def_cfa_offset 0
+  50 000c 7047     		bx	lr
+  51              		.cfi_endproc
+  52              	.LFE134:
+  54              		.section	.text.HardFault_Handler,"ax",%progbits
+  55              		.align	1
+  56              		.global	HardFault_Handler
+  57              		.syntax unified
+  58              		.thumb
+  59              		.thumb_func
+  60              		.fpu fpv4-sp-d16
+  62              	HardFault_Handler:
+  63              	.LFB135:
+  82:Firmware/Core/Src/stm32f4xx_it.c **** 
+  83:Firmware/Core/Src/stm32f4xx_it.c **** /**
+  84:Firmware/Core/Src/stm32f4xx_it.c ****   * @brief This function handles Hard fault interrupt.
+  85:Firmware/Core/Src/stm32f4xx_it.c ****   */
+  86:Firmware/Core/Src/stm32f4xx_it.c **** void HardFault_Handler(void)
+  87:Firmware/Core/Src/stm32f4xx_it.c **** {
+  64              		.loc 1 87 0
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 0
+  67              		@ frame_needed = 1, uses_anonymous_args = 0
+  68              		@ link register save eliminated.
+  69 0000 80B4     		push	{r7}
+  70              	.LCFI4:
+  71              		.cfi_def_cfa_offset 4
+  72              		.cfi_offset 7, -4
+  73 0002 00AF     		add	r7, sp, #0
+  74              	.LCFI5:
+  75              		.cfi_def_cfa_register 7
+  76              	.L3:
+  88:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN HardFault_IRQn 0 */
+  89:Firmware/Core/Src/stm32f4xx_it.c **** 
+  90:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE END HardFault_IRQn 0 */
+  91:Firmware/Core/Src/stm32f4xx_it.c ****   while (1)
+  77              		.loc 1 91 0 discriminator 1
+  78 0004 FEE7     		b	.L3
+  79              		.cfi_endproc
+  80              	.LFE135:
+  82              		.section	.text.MemManage_Handler,"ax",%progbits
+  83              		.align	1
+  84              		.global	MemManage_Handler
+ARM GAS  /tmp/ccIZVMoC.s 			page 4
+
+
+  85              		.syntax unified
+  86              		.thumb
+  87              		.thumb_func
+  88              		.fpu fpv4-sp-d16
+  90              	MemManage_Handler:
+  91              	.LFB136:
+  92:Firmware/Core/Src/stm32f4xx_it.c ****   {
+  93:Firmware/Core/Src/stm32f4xx_it.c ****     /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+  94:Firmware/Core/Src/stm32f4xx_it.c ****     /* USER CODE END W1_HardFault_IRQn 0 */
+  95:Firmware/Core/Src/stm32f4xx_it.c ****   }
+  96:Firmware/Core/Src/stm32f4xx_it.c **** }
+  97:Firmware/Core/Src/stm32f4xx_it.c **** 
+  98:Firmware/Core/Src/stm32f4xx_it.c **** /**
+  99:Firmware/Core/Src/stm32f4xx_it.c ****   * @brief This function handles Memory management fault.
+ 100:Firmware/Core/Src/stm32f4xx_it.c ****   */
+ 101:Firmware/Core/Src/stm32f4xx_it.c **** void MemManage_Handler(void)
+ 102:Firmware/Core/Src/stm32f4xx_it.c **** {
+  92              		.loc 1 102 0
+  93              		.cfi_startproc
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 1, uses_anonymous_args = 0
+  96              		@ link register save eliminated.
+  97 0000 80B4     		push	{r7}
+  98              	.LCFI6:
+  99              		.cfi_def_cfa_offset 4
+ 100              		.cfi_offset 7, -4
+ 101 0002 00AF     		add	r7, sp, #0
+ 102              	.LCFI7:
+ 103              		.cfi_def_cfa_register 7
+ 104              	.L5:
+ 103:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+ 104:Firmware/Core/Src/stm32f4xx_it.c **** 
+ 105:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE END MemoryManagement_IRQn 0 */
+ 106:Firmware/Core/Src/stm32f4xx_it.c ****   while (1)
+ 105              		.loc 1 106 0 discriminator 1
+ 106 0004 FEE7     		b	.L5
+ 107              		.cfi_endproc
+ 108              	.LFE136:
+ 110              		.section	.text.BusFault_Handler,"ax",%progbits
+ 111              		.align	1
+ 112              		.global	BusFault_Handler
+ 113              		.syntax unified
+ 114              		.thumb
+ 115              		.thumb_func
+ 116              		.fpu fpv4-sp-d16
+ 118              	BusFault_Handler:
+ 119              	.LFB137:
+ 107:Firmware/Core/Src/stm32f4xx_it.c ****   {
+ 108:Firmware/Core/Src/stm32f4xx_it.c ****     /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
+ 109:Firmware/Core/Src/stm32f4xx_it.c ****     /* USER CODE END W1_MemoryManagement_IRQn 0 */
+ 110:Firmware/Core/Src/stm32f4xx_it.c ****   }
+ 111:Firmware/Core/Src/stm32f4xx_it.c **** }
+ 112:Firmware/Core/Src/stm32f4xx_it.c **** 
+ 113:Firmware/Core/Src/stm32f4xx_it.c **** /**
+ 114:Firmware/Core/Src/stm32f4xx_it.c ****   * @brief This function handles Pre-fetch fault, memory access fault.
+ 115:Firmware/Core/Src/stm32f4xx_it.c ****   */
+ 116:Firmware/Core/Src/stm32f4xx_it.c **** void BusFault_Handler(void)
+ARM GAS  /tmp/ccIZVMoC.s 			page 5
+
+
+ 117:Firmware/Core/Src/stm32f4xx_it.c **** {
+ 120              		.loc 1 117 0
+ 121              		.cfi_startproc
+ 122              		@ args = 0, pretend = 0, frame = 0
+ 123              		@ frame_needed = 1, uses_anonymous_args = 0
+ 124              		@ link register save eliminated.
+ 125 0000 80B4     		push	{r7}
+ 126              	.LCFI8:
+ 127              		.cfi_def_cfa_offset 4
+ 128              		.cfi_offset 7, -4
+ 129 0002 00AF     		add	r7, sp, #0
+ 130              	.LCFI9:
+ 131              		.cfi_def_cfa_register 7
+ 132              	.L7:
+ 118:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN BusFault_IRQn 0 */
+ 119:Firmware/Core/Src/stm32f4xx_it.c **** 
+ 120:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE END BusFault_IRQn 0 */
+ 121:Firmware/Core/Src/stm32f4xx_it.c ****   while (1)
+ 133              		.loc 1 121 0 discriminator 1
+ 134 0004 FEE7     		b	.L7
+ 135              		.cfi_endproc
+ 136              	.LFE137:
+ 138              		.section	.text.UsageFault_Handler,"ax",%progbits
+ 139              		.align	1
+ 140              		.global	UsageFault_Handler
+ 141              		.syntax unified
+ 142              		.thumb
+ 143              		.thumb_func
+ 144              		.fpu fpv4-sp-d16
+ 146              	UsageFault_Handler:
+ 147              	.LFB138:
+ 122:Firmware/Core/Src/stm32f4xx_it.c ****   {
+ 123:Firmware/Core/Src/stm32f4xx_it.c ****     /* USER CODE BEGIN W1_BusFault_IRQn 0 */
+ 124:Firmware/Core/Src/stm32f4xx_it.c ****     /* USER CODE END W1_BusFault_IRQn 0 */
+ 125:Firmware/Core/Src/stm32f4xx_it.c ****   }
+ 126:Firmware/Core/Src/stm32f4xx_it.c **** }
+ 127:Firmware/Core/Src/stm32f4xx_it.c **** 
+ 128:Firmware/Core/Src/stm32f4xx_it.c **** /**
+ 129:Firmware/Core/Src/stm32f4xx_it.c ****   * @brief This function handles Undefined instruction or illegal state.
+ 130:Firmware/Core/Src/stm32f4xx_it.c ****   */
+ 131:Firmware/Core/Src/stm32f4xx_it.c **** void UsageFault_Handler(void)
+ 132:Firmware/Core/Src/stm32f4xx_it.c **** {
+ 148              		.loc 1 132 0
+ 149              		.cfi_startproc
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 1, uses_anonymous_args = 0
+ 152              		@ link register save eliminated.
+ 153 0000 80B4     		push	{r7}
+ 154              	.LCFI10:
+ 155              		.cfi_def_cfa_offset 4
+ 156              		.cfi_offset 7, -4
+ 157 0002 00AF     		add	r7, sp, #0
+ 158              	.LCFI11:
+ 159              		.cfi_def_cfa_register 7
+ 160              	.L9:
+ 133:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN UsageFault_IRQn 0 */
+ 134:Firmware/Core/Src/stm32f4xx_it.c **** 
+ARM GAS  /tmp/ccIZVMoC.s 			page 6
+
+
+ 135:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE END UsageFault_IRQn 0 */
+ 136:Firmware/Core/Src/stm32f4xx_it.c ****   while (1)
+ 161              		.loc 1 136 0 discriminator 1
+ 162 0004 FEE7     		b	.L9
+ 163              		.cfi_endproc
+ 164              	.LFE138:
+ 166              		.section	.text.DebugMon_Handler,"ax",%progbits
+ 167              		.align	1
+ 168              		.global	DebugMon_Handler
+ 169              		.syntax unified
+ 170              		.thumb
+ 171              		.thumb_func
+ 172              		.fpu fpv4-sp-d16
+ 174              	DebugMon_Handler:
+ 175              	.LFB139:
+ 137:Firmware/Core/Src/stm32f4xx_it.c ****   {
+ 138:Firmware/Core/Src/stm32f4xx_it.c ****     /* USER CODE BEGIN W1_UsageFault_IRQn 0 */
+ 139:Firmware/Core/Src/stm32f4xx_it.c ****     /* USER CODE END W1_UsageFault_IRQn 0 */
+ 140:Firmware/Core/Src/stm32f4xx_it.c ****   }
+ 141:Firmware/Core/Src/stm32f4xx_it.c **** }
+ 142:Firmware/Core/Src/stm32f4xx_it.c **** 
+ 143:Firmware/Core/Src/stm32f4xx_it.c **** /**
+ 144:Firmware/Core/Src/stm32f4xx_it.c ****   * @brief This function handles Debug monitor.
+ 145:Firmware/Core/Src/stm32f4xx_it.c ****   */
+ 146:Firmware/Core/Src/stm32f4xx_it.c **** void DebugMon_Handler(void)
+ 147:Firmware/Core/Src/stm32f4xx_it.c **** {
+ 176              		.loc 1 147 0
+ 177              		.cfi_startproc
+ 178              		@ args = 0, pretend = 0, frame = 0
+ 179              		@ frame_needed = 1, uses_anonymous_args = 0
+ 180              		@ link register save eliminated.
+ 181 0000 80B4     		push	{r7}
+ 182              	.LCFI12:
+ 183              		.cfi_def_cfa_offset 4
+ 184              		.cfi_offset 7, -4
+ 185 0002 00AF     		add	r7, sp, #0
+ 186              	.LCFI13:
+ 187              		.cfi_def_cfa_register 7
+ 148:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN DebugMonitor_IRQn 0 */
+ 149:Firmware/Core/Src/stm32f4xx_it.c **** 
+ 150:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE END DebugMonitor_IRQn 0 */
+ 151:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN DebugMonitor_IRQn 1 */
+ 152:Firmware/Core/Src/stm32f4xx_it.c **** 
+ 153:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE END DebugMonitor_IRQn 1 */
+ 154:Firmware/Core/Src/stm32f4xx_it.c **** }
+ 188              		.loc 1 154 0
+ 189 0004 00BF     		nop
+ 190 0006 BD46     		mov	sp, r7
+ 191              	.LCFI14:
+ 192              		.cfi_def_cfa_register 13
+ 193              		@ sp needed
+ 194 0008 5DF8047B 		ldr	r7, [sp], #4
+ 195              	.LCFI15:
+ 196              		.cfi_restore 7
+ 197              		.cfi_def_cfa_offset 0
+ 198 000c 7047     		bx	lr
+ 199              		.cfi_endproc
+ARM GAS  /tmp/ccIZVMoC.s 			page 7
+
+
+ 200              	.LFE139:
+ 202              		.section	.text.TIM8_BRK_TIM12_IRQHandler,"ax",%progbits
+ 203              		.align	1
+ 204              		.global	TIM8_BRK_TIM12_IRQHandler
+ 205              		.syntax unified
+ 206              		.thumb
+ 207              		.thumb_func
+ 208              		.fpu fpv4-sp-d16
+ 210              	TIM8_BRK_TIM12_IRQHandler:
+ 211              	.LFB140:
+ 155:Firmware/Core/Src/stm32f4xx_it.c **** 
+ 156:Firmware/Core/Src/stm32f4xx_it.c **** /******************************************************************************/
+ 157:Firmware/Core/Src/stm32f4xx_it.c **** /* STM32F4xx Peripheral Interrupt Handlers                                    */
+ 158:Firmware/Core/Src/stm32f4xx_it.c **** /* Add here the Interrupt Handlers for the used peripherals.                  */
+ 159:Firmware/Core/Src/stm32f4xx_it.c **** /* For the available peripheral interrupt handler names,                      */
+ 160:Firmware/Core/Src/stm32f4xx_it.c **** /* please refer to the startup file (startup_stm32f4xx.s).                    */
+ 161:Firmware/Core/Src/stm32f4xx_it.c **** /******************************************************************************/
+ 162:Firmware/Core/Src/stm32f4xx_it.c **** 
+ 163:Firmware/Core/Src/stm32f4xx_it.c **** /**
+ 164:Firmware/Core/Src/stm32f4xx_it.c ****   * @brief This function handles TIM8 break interrupt and TIM12 global interrupt.
+ 165:Firmware/Core/Src/stm32f4xx_it.c ****   */
+ 166:Firmware/Core/Src/stm32f4xx_it.c **** void TIM8_BRK_TIM12_IRQHandler(void)
+ 167:Firmware/Core/Src/stm32f4xx_it.c **** {
+ 212              		.loc 1 167 0
+ 213              		.cfi_startproc
+ 214              		@ args = 0, pretend = 0, frame = 0
+ 215              		@ frame_needed = 1, uses_anonymous_args = 0
+ 216 0000 80B5     		push	{r7, lr}
+ 217              	.LCFI16:
+ 218              		.cfi_def_cfa_offset 8
+ 219              		.cfi_offset 7, -8
+ 220              		.cfi_offset 14, -4
+ 221 0002 00AF     		add	r7, sp, #0
+ 222              	.LCFI17:
+ 223              		.cfi_def_cfa_register 7
+ 168:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN TIM8_BRK_TIM12_IRQn 0 */
+ 169:Firmware/Core/Src/stm32f4xx_it.c **** 
+ 170:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE END TIM8_BRK_TIM12_IRQn 0 */
+ 171:Firmware/Core/Src/stm32f4xx_it.c ****   HAL_TIM_IRQHandler(&htim12);
+ 224              		.loc 1 171 0
+ 225 0004 0248     		ldr	r0, .L12
+ 226 0006 FFF7FEFF 		bl	HAL_TIM_IRQHandler
+ 172:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE BEGIN TIM8_BRK_TIM12_IRQn 1 */
+ 173:Firmware/Core/Src/stm32f4xx_it.c **** 
+ 174:Firmware/Core/Src/stm32f4xx_it.c ****   /* USER CODE END TIM8_BRK_TIM12_IRQn 1 */
+ 175:Firmware/Core/Src/stm32f4xx_it.c **** }
+ 227              		.loc 1 175 0
+ 228 000a 00BF     		nop
+ 229 000c 80BD     		pop	{r7, pc}
+ 230              	.L13:
+ 231 000e 00BF     		.align	2
+ 232              	.L12:
+ 233 0010 00000000 		.word	htim12
+ 234              		.cfi_endproc
+ 235              	.LFE140:
+ 237              		.text
+ 238              	.Letext0:
+ARM GAS  /tmp/ccIZVMoC.s 			page 8
+
+
+ 239              		.file 2 "/home/zht/stm32tools/arm-gcc/arm-none-eabi/include/machine/_default_types.h"
+ 240              		.file 3 "/home/zht/stm32tools/arm-gcc/arm-none-eabi/include/sys/_stdint.h"
+ 241              		.file 4 "Firmware/Drivers/CMSIS/Include/core_cm4.h"
+ 242              		.file 5 "Firmware/Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 243              		.file 6 "Firmware/Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h"
+ 244              		.file 7 "Firmware/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 245              		.file 8 "Firmware/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 246              		.file 9 "Firmware/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+ 247              		.file 10 "Firmware/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  /tmp/ccIZVMoC.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_it.c
+     /tmp/ccIZVMoC.s:18     .text.NMI_Handler:0000000000000000 $t
+     /tmp/ccIZVMoC.s:25     .text.NMI_Handler:0000000000000000 NMI_Handler
+     /tmp/ccIZVMoC.s:55     .text.HardFault_Handler:0000000000000000 $t
+     /tmp/ccIZVMoC.s:62     .text.HardFault_Handler:0000000000000000 HardFault_Handler
+     /tmp/ccIZVMoC.s:83     .text.MemManage_Handler:0000000000000000 $t
+     /tmp/ccIZVMoC.s:90     .text.MemManage_Handler:0000000000000000 MemManage_Handler
+     /tmp/ccIZVMoC.s:111    .text.BusFault_Handler:0000000000000000 $t
+     /tmp/ccIZVMoC.s:118    .text.BusFault_Handler:0000000000000000 BusFault_Handler
+     /tmp/ccIZVMoC.s:139    .text.UsageFault_Handler:0000000000000000 $t
+     /tmp/ccIZVMoC.s:146    .text.UsageFault_Handler:0000000000000000 UsageFault_Handler
+     /tmp/ccIZVMoC.s:167    .text.DebugMon_Handler:0000000000000000 $t
+     /tmp/ccIZVMoC.s:174    .text.DebugMon_Handler:0000000000000000 DebugMon_Handler
+     /tmp/ccIZVMoC.s:203    .text.TIM8_BRK_TIM12_IRQHandler:0000000000000000 $t
+     /tmp/ccIZVMoC.s:210    .text.TIM8_BRK_TIM12_IRQHandler:0000000000000000 TIM8_BRK_TIM12_IRQHandler
+     /tmp/ccIZVMoC.s:233    .text.TIM8_BRK_TIM12_IRQHandler:0000000000000010 $d
+                           .group:0000000000000000 wm4.0.66eb26e6ef234a179f62cd8806fe3c00
+                           .group:0000000000000000 wm4.stm32f4xx_hal_conf.h.24.03c00010d617045ebb35c82914a9515b
+                           .group:0000000000000000 wm4.stm32f4xx.h.55.60c09cb5ab474e463c44285ed7739f1f
+                           .group:0000000000000000 wm4.stm32f446xx.h.51.16a9122ede9860ebbb552c9e423d1ecd
+                           .group:0000000000000000 wm4._newlib_version.h.4.875b979a44719054cd750d0952ad3fd6
+                           .group:0000000000000000 wm4.features.h.33.318b64d71e0957639cfb30f1db1f7ec8
+                           .group:0000000000000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:0000000000000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
+                           .group:0000000000000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:0000000000000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:0000000000000000 wm4.cmsis_version.h.32.4d5822004c01a829a975260e854b5f8e
+                           .group:0000000000000000 wm4.core_cm4.h.66.e4ff136c4a17abc46741866f64f8e729
+                           .group:0000000000000000 wm4.cmsis_gcc.h.26.f42444deefab66ffa141b9b9fddb57a3
+                           .group:0000000000000000 wm4.core_cm4.h.174.059a5e001a9e729091d1407208e93224
+                           .group:0000000000000000 wm4.mpu_armv7.h.32.27b4593cb2f8d3152ca5d97a9d72b321
+                           .group:0000000000000000 wm4.stm32f446xx.h.934.08868cf5988b286c95ce57658833140b
+                           .group:0000000000000000 wm4.stm32f4xx.h.212.729f0f890654645a3f47ccc0cc2b00e7
+                           .group:0000000000000000 wm4.stm32_hal_legacy.h.23.24c1109a8eb6b9f423a3627922c83f30
+                           .group:0000000000000000 wm4.stddef.h.39.a38874c8f8a57e66301090908ec2a69f
+                           .group:0000000000000000 wm4.stm32f4xx_hal_def.h.58.2d2c85d5b9693a63e90566b806e8a752
+                           .group:0000000000000000 wm4.stm32f4xx_hal_rcc_ex.h.22.ed8712e28628f6d35bd6f8847ee2f18f
+                           .group:0000000000000000 wm4.stm32f4xx_hal_rcc.h.108.0c18a3cfc2dd91bdf92470b4bd0ea1b5
+                           .group:0000000000000000 wm4.stm32f4xx_hal_exti.h.22.e3c6ea1ecbc30ac4867071b634937175
+                           .group:0000000000000000 wm4.stm32f4xx_hal_gpio.h.22.be2c6bcf9722096ea8f49a41bf6aa50c
+                           .group:0000000000000000 wm4.stm32f4xx_hal_gpio_ex.h.22.6858f59ca8a52c645189c74569e4d5b8
+                           .group:0000000000000000 wm4.stm32f4xx_hal_gpio.h.264.978ac12eab1d3b3400b35b8c427e2c33
+                           .group:0000000000000000 wm4.stm32f4xx_hal_dma.h.22.fffce20ac9119c50557659c75e75ab1c
+                           .group:0000000000000000 wm4.stm32f4xx_hal_dma.h.721.a1e57ffbc615f926e6509c5acc65e492
+                           .group:0000000000000000 wm4.stm32f4xx_hal_cortex.h.22.e6aa3b847b5388be63c32d1f9e696ef7
+                           .group:0000000000000000 wm4.stm32f4xx_hal_flash.h.22.31b301be2655c3eb8583e51c8231544a
+                           .group:0000000000000000 wm4.stm32f4xx_hal_flash_ex.h.22.df74a74dd40656a7fcd7d90cedd190b4
+                           .group:0000000000000000 wm4.stm32f4xx_hal_flash.h.363.51efdf0f6c88f683efb89d7cc95cc1be
+                           .group:0000000000000000 wm4.stm32f4xx_hal_pwr.h.22.2c27d93ae187efe3a73816f03a329970
+                           .group:0000000000000000 wm4.stm32f4xx_hal_pwr_ex.h.22.cf49f655fb514fa1eda6a251fa1b2f1a
+                           .group:0000000000000000 wm4.stm32f4xx_hal_pwr.h.337.60b43975c84527a23cb6994b23165a5e
+                           .group:0000000000000000 wm4.stm32f4xx_hal_tim.h.22.9c16860ec2cc7f3d941608a8f521bc4a
+                           .group:0000000000000000 wm4.stm32f4xx_hal_tim_ex.h.22.ab99a7fa30daa00d91e82a48801a7f30
+                           .group:0000000000000000 wm4.stm32f4xx_hal_uart.h.22.1edfd0da9670bd23245390d2a3da576d
+                           .group:0000000000000000 wm4.stm32f4xx_ll_usb.h.22.9dd425f23cc4ee09cc013b784f1d3b1a
+                           .group:0000000000000000 wm4.stm32f4xx_hal_pcd.h.155.99d086aed65c9e0b877f5c367a6472c1
+ARM GAS  /tmp/ccIZVMoC.s 			page 10
+
+
+                           .group:0000000000000000 wm4.stm32f4xx_hal.h.72.a5a58188aa461a0614f1e58e159c7840
+                           .group:0000000000000000 wm4.main.h.61.fe245643c967f5b254f53157b3e67e33
+                           .group:0000000000000000 wm4.FreeRTOSConfig.h.31.a9a1cd9cd188e45c3cdf6a65e0bc1430
+                           .group:0000000000000000 wm4.projdefs.h.29.3472c8470d131a5f474bc7437ea94609
+                           .group:0000000000000000 wm4.portmacro.h.30.110a3580e768a63cdd084aa29b33cb01
+                           .group:0000000000000000 wm4.portable.h.64.00b423ba030e23bed354b037664af7a6
+                           .group:0000000000000000 wm4.mpu_wrappers.h.29.89d425470b0b1ff39fbd61026b3dc073
+                           .group:0000000000000000 wm4.FreeRTOS.h.66.a6a3890d948540b7d907430686cf5981
+                           .group:0000000000000000 wm4.list.h.61.bafeaa82806d71ae8917c6d7827fc3d2
+                           .group:0000000000000000 wm4.task.h.46.0d11769cee96bf77a599bac125eeecf9
+
+UNDEFINED SYMBOLS
+HAL_TIM_IRQHandler
+htim12
