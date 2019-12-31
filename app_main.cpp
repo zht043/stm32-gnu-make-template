@@ -19,7 +19,7 @@ void setup(void) {
 }
 
 void loop0(void) {
-    static int t = 300;
+    static int t = 200;
     red_led.write(Low);
     green_led.write(High);
     delay(t);

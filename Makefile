@@ -10,17 +10,22 @@
 ###				  every time CubeMX regenerates)
 ###				 It also integrates many useful functionalities such as flashing the .elf file  
 ###				 to the device, print memory usages, create call-graphs etc.   
+
+###				 Additionally for GDB debugging: I recommend the Cortex-Debug plugin for vscode 
+###				 https://marcelball.ca/projects/cortex-debug/cortex-debug-launch-configurations/
+###				 Or OpenOCD if you prefer to run GDB on pure command line environment.
+
 ### System Requirement: MacOS, Linux, Win10 (install WSL Ubuntu subsystem if on Windows)
 ### Dependencies: stm32CubeMx, arm-none-eabi-gcc tool chain (version 7-2018-q2 update),
-### 			  OpenOCD or/and stm32CubeProgrammer, graphviz(optional), cflow(optional)
+### 			  stm32CubeProgrammer, graphviz(optional), cflow(optional)
 
 ### Typical Workflow: Create project directory <prj-dir> --> open stm32CubeMx and config device settings
 ### 		  --> Generate makefile project in stm32CubeMx to <cube-prj-dir> 
 ###			  --> update <FDIR> variable to be the path of <cube-prj-dir> 
 ###			  --> add user-defined sources and headers (see FMV bellow)
 ###			  --> customize the rest of FMVs --> run make 
-###			  --> flash .elf file to your stm32 device (through OpenOCD or stm32CubeProgrammer)
-###			  --> Debug through OpenOCD GDB server
+###			  --> flash(download) .elf file to your stm32 device (through stm32CubeProgrammer)
+###	(additional) --> Debug through OpenOCD or PyOCD GDB server (not included in this makefile)
 
 ### Run "make" to invoke the default target build that builds the <target-name>.elf 
 ### file in the current directory using 8 threads to build faster(default to call "make -j8")
@@ -50,7 +55,7 @@
 
 ### Run "make Clean" (uppercase 'C' !) to remove <target-name>.elf and <BUILD> directory
 
-### Run "make flash"
+### Run "make flash" : refer to the flash section bellow and stm32CubeProgrammer User Mannual for more details
 
 ### Run "make print-objs", "make print-sources", "make print-targets", or "make print-flags"
 ### to see the associated compling info
@@ -207,6 +212,45 @@ $(BUILD)/main.o: main.c Makefile | $(BUILD)
 
 -include $(wildcard $(BUILD)/*.d)
 
+###############
+#flash section#
+########################################################################################################
+#stm32CubeProgrammer command line interface (CLI) executable path (in bin directory, suffix is different for different OS)
+#(recommend adding the executable to system path)
+cubeprog = STM32_Programmer_CLI.exe 
+
+#support interfaces such as SWD, USART, I2C, SPI, USB etc. 
+interface = SWD
+
+#interface-specific configuration, e.g. freq: frequency, br: braudrate, etc.
+interface_config = freq=4000 
+
+#connect to device
+connect: 
+	$(cubeprog) -c port=$(interface) $(interface_config)
+
+#Flash Device (download .elf file from PC/Mac to the correct Flash memory region of the stm32 device)
+#(look up "cross-compilation" online if uncertain about this step)
+flash: default $(target).elf
+	$(cubeprog) -c port=$(interface) $(interface_config) -d $(target).elf -v 
+flash-reset: default $(target).elf
+	$(cubeprog) -c port=$(interface) $(interface_config) -d $(target).elf -v -rst
+flash-verbose: default $(target).elf
+	$(cubeprog) -c port=$(interface) $(interface_config) -d $(target).elf -v -vb 3 
+
+#list all available rs232 serial port
+list-serial:
+	$(cubeprog) -c port=$(interface) $(interface_config) -l
+	
+#Erase all flash memory sectors (for commands erasing particular flash sector, search "-e" option in user mannual)
+erase-all:
+	$(cubeprog) -c port=$(interface) $(interface_config) -e all
+
+
+
+
+########################################################################################################
+
 #PHONY Targets
 .PHONY: 
 	default 
@@ -215,6 +259,9 @@ $(BUILD)/main.o: main.c Makefile | $(BUILD)
 	print-sources 
 	print-target
 	print-flags
+	connect
+	list-serial
+	erase-all
 
 #Clean
 Clean:
